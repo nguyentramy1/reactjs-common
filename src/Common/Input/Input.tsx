@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import "./Input.scss";
 
 type InputProps = {
-  value?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;  // Nhận event thay vì string
+  value: string;
+  onChange: (value: string) => void;
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
-  placeholder?: string; 
 };
 
 const Input: React.FC<InputProps> = ({
@@ -16,10 +15,8 @@ const Input: React.FC<InputProps> = ({
   disabled,
   className,
   style,
-  placeholder,
 }) => {
   const [isFocus, setFocus] = useState(false);
-
   return (
     <div
       className={`custom-input ${isFocus ? "custom-input-focus" : ""} ${
@@ -36,9 +33,9 @@ const Input: React.FC<InputProps> = ({
         }}
         disabled={disabled}
         type="text"
+        placeholder="Enter your name"
         value={value}
-        placeholder={placeholder}
-        onChange={onChange}  // Truyền event thay vì e.target.value
+        onChange={(e) => onChange(e.target.value)}
       />
     </div>
   );
