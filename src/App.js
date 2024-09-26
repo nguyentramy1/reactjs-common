@@ -218,3 +218,67 @@ Modal-content.scss
 
 
 
+hooks
+useClickOutSide.tsx
+import React, { useEffect } from "react";
+
+const useClickOutSide = (
+  dropdownRef: any,
+  setIsDropdownOpen: (e: boolean) => void
+) => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+};
+
+export default useClickOutSide;
+
+useOnChange.tsx
+import { Dispatch, SetStateAction } from "react";
+import { optionType } from "../DropDownField";
+
+const useOnChange = (
+  setIsDropdownOpen: Dispatch<SetStateAction<boolean>>,
+  selectedOption: optionType | null,
+  setSelectedOption: Dispatch<SetStateAction<optionType | null>>,
+  onChange: (e: optionType) => void
+) => {
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleOptionSelect = (option: optionType) => {
+    setSelectedOption(option);
+    onChange(option);
+    setIsDropdownOpen(false);
+  };
+
+  return { toggleDropdown, handleOptionSelect };
+};
+
+export default useOnChange;
+
+
+
+
+
+
+
+
+
+
+
+
+
