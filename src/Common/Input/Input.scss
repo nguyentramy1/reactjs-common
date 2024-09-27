@@ -26,3 +26,181 @@
 .custom-input-focus {
   border-color: #005c88;
 }
+
+
+
+
+
+
+
+
+
+
+
+modal-conten.tsx
+import React, { useState } from "react";
+
+import "./Modal-content.scss";
+
+interface ModalContentProps {
+  onClose: () => void;
+  label: string;
+  isOpen: boolean;
+}
+
+const ModalContent: React.FC<ModalContentProps> = ({ onClose, label,isOpen }) => {
+  return (
+    <div className={`screen-below ${isOpen ? 'open' : 'close'}`} onClick={onClose}>
+      <div className="modal">
+        <div className="modal-header">
+          <h2>{label}</h2>
+        </div>
+        <hr className="modal-line" />
+        <div className="modal-body"></div>
+        <div className="modal-footer">
+          <hr className="modal-line" />
+        </div>
+        {/* <div className="Button">
+          <Button className="Cancel" onClick={onClose} content="Thoát" />
+          <Button onClick={onClose} content="Lưu" />
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+export default ModalContent;
+
+
+
+
+
+
+
+
+scss
+.screen-below {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000E5;
+  opacity: 0.5;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  width: 960px;
+  height: 218px;
+  box-sizing: border-box;
+  transition: 1s ease;
+  
+
+  .modal-header {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 10px;
+    border-bottom: 1px;
+    border-color: #003E5B;
+    
+    
+
+    h2 {
+      font-size: 18px;
+      margin: 0;
+      color: #003E5B;
+
+    }
+  }
+
+  .modal-body {
+      margin: 20px 0;
+      padding-left: 20px;
+      padding-right: 20px;
+  }
+
+  .modal-line {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 10px 0;
+  }
+
+  .Button {
+    display: flex;
+    margin-right: 0px;
+    justify-content: flex-end;
+    .Cancel {
+      background-color: #fff;
+
+      .custom-content {
+        color: #009ae3;
+      }
+    }
+  }
+}
+
+import React, { useState } from "react";
+import "./App.scss";
+import Button from "./common/Button/Button.tsx";
+import DropDownField, { optionType } from "./common/Input/DropDown/DropDownField.tsx";
+import { createPortal } from 'react-dom';
+import ModalContent from './common/Modal/Modal-content.tsx';
+
+
+function App() {
+  const [selected1, setSelected1] = useState<optionType | null>(null);
+  const [selected2, setSelected2] = useState<optionType | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false); // Trạng thái cho modal
+
+  // Dữ liệu cho dropdown
+  const newArr = new Array(15).fill(null);
+  const fakeOptions1 = newArr.map((_, index) => ({
+    value: `option${index}`,
+    label: `Lựa chọn số ${index}`,
+  }));
+  const fakeOptions2 = newArr.map((_, index) => ({
+    value: `option${index}`,
+    label: `Option ${index}`,
+  }));
+  
+
+
+  return (
+    <div className="App">
+      <DropDownField
+        options={fakeOptions1}
+        onChange={setSelected1}
+        selected={selected1?.label}
+      />
+      <DropDownField
+        options={fakeOptions2}
+        onChange={setSelected2}
+        selected={selected2?.label}
+      />
+   
+      <Button 
+        content="Show modal" 
+        onClick={() => setShowModal(true)} 
+        disabled={showModal}
+      />
+      {showModal && createPortal(
+        <ModalContent onClose={() => setShowModal(false)} label='Thêm mới bảng lương'/>,
+        document.body
+      )}
+      
+    </div>
+  );
+}
+
+export default App;
+
+
