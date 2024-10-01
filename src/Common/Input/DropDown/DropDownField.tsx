@@ -1,9 +1,8 @@
 import React, { useState,useRef} from "react";
 import "./DropDownField.scss";
-import Button from "../../Button/Button.tsx";
+import Button from "../Button/Button.tsx";
 import useOnChange from "./hooks/useOnChange.tsx";
 import useClickOutSide from "./hooks/useClickOutSide.tsx";
-
 
 export interface optionType {
   value: string;
@@ -14,12 +13,14 @@ interface InputDropdownProps {
   options: optionType[];
   onChange: (e: optionType) => void;
   selected: string | undefined;
+  placeholder?: string;
 }
 
 const DropDownField: React.FC<InputDropdownProps> = ({ 
   options,
   onChange,
   selected, 
+  placeholder,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
@@ -48,11 +49,12 @@ const DropDownField: React.FC<InputDropdownProps> = ({
                 selected ? "selected-text-option" : ""
               }`}
             >
-              {selected ? selected : "Chọn"}
+              {selected ? selected :placeholder|| "Chọn"}
+              
             </div>
             <div className="dropdown">
               <div className={isDropdownOpen ? "icon-open" : "icon-close"}>
-                <div className="drop-icon" />
+                <div className="drop-icon" style={{width:20}}/>
               </div>
             </div>
           </div>
